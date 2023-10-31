@@ -1,47 +1,91 @@
-
-// Non-Recursive
+import java.util.Scanner;
 
 public class Main {
-    public static long calculateFibonacci(int n) {
-        if (n <= 1) {
-            return n;
+    static int rSteps = 0;
+    static int iSteps = 0;
+
+    public static int rStepFibonacci(int n) {
+        rSteps++;
+        if (n < 0)
+            return 0;
+        if (n == 1 || n == 0)
+            return 1;
+        return rStepFibonacci(n - 1) + rStepFibonacci(n - 2);
+    }
+
+    public static void iStepFibonacci(int n) {
+        int[] f = new int[n];
+        f[0] = 0;
+        f[1] = 1;
+        iSteps = 1;
+        System.out.print("Fibonacci Series (Iterative): ");
+        for (int i = 2; i < n; i++) {
+            iSteps++;
+            f[i] = f[i - 1] + f[i - 2];
         }
-
-        long[] fib = new long[n + 1];
-        fib[0] = 0;
-        fib[1] = 1;
-
-        for (int i = 2; i <= n; i++) {
-            fib[i] = fib[i - 1] + fib[i - 2];
+        for (int i = 0; i < n; i++) {
+            System.out.print(f[i] + " ");
         }
+        System.out.println();
+    }
 
-        return fib[n];
+    public static void printFibonacciSeries(int n) {
+        System.out.print("Fibonacci Series (Recursive): ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(rStepFibonacci(i) + " ");
+        }
+        System.out.println();
     }
 
     public static void main(String[] args) {
-        int n = 20; // Change n to calculate different Fibonacci numbers
-        long result = calculateFibonacci(n);
-        System.out.println("Fibonacci(" + n + ") = " + result);
-    }
-}
+        int choice;
+        int n;
+        Scanner scanner = new Scanner(System.in);
 
+        while (true) {
+            System.out.println("Fibonacci Series Menu:");
+            System.out.println("1. Calculate Iteratively");
+            System.out.println("2. Calculate Recursively");
+            System.out.println("3. Quit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
 
+            if (choice == 1 || choice == 2) {
+                System.out.print("Enter the number of Fibonacci numbers to generate: ");
+                n = scanner.nextInt();
 
+                if (n <= 0) {
+                    System.out.println("Invalid input. Please enter a positive number.");
+                    continue;
+                }
 
-// Recursive
+                if (choice == 1) {
+                    iSteps = 0;
+                    long startTime = System.currentTimeMillis();
+                    iStepFibonacci(n);
+                    long endTime = System.currentTimeMillis();
+                    double elapsedTime = endTime - startTime;
 
-public class Main {
-    public static long calculateFibonacci(int n) {
-        if (n <= 1) {
-            return n;
+                    System.out.println("Iterative function called " + iSteps + " times.");
+                    System.out.println("Time taken: " + elapsedTime + " milliseconds");
+                } else if (choice == 2) {
+                    rSteps = 0;
+                    long startTime = System.currentTimeMillis();
+                    printFibonacciSeries(n);
+                    long endTime = System.currentTimeMillis();
+                    double elapsedTime = endTime - startTime;
+
+                    System.out.println("Recursive function called " + rSteps + " times.");
+                    System.out.println("Time taken: " + elapsedTime + " milliseconds");
+                }
+            } else if (choice == 3) {
+                System.out.println("Successfully Exited.");
+                break;
+            } else {
+                System.out.println("Invalid choice. Please select a valid option.");
+            }
         }
-        return calculateFibonacci(n - 1) + calculateFibonacci(n - 2);
-    }
-
-    public static void main(String[] args) {
-        int n = 20; // Change n to calculate different Fibonacci numbers
-        long result = calculateFibonacci(n);
-        System.out.println("Fibonacci(" + n + ") = " + result);
+        scanner.close();
     }
 }
 
@@ -49,23 +93,34 @@ public class Main {
 
 
 /*
-  Output:
 
-    Fibonacci(20) = 6765
+output:
 
-    Fibonacci(33) = 3524578
-*/
+Fibonacci Series Menu:
+1. Calculate Iteratively
+2. Calculate Recursively
+3. Quit
+Enter your choice: 1
+Enter the number of Fibonacci numbers to generate: 5
+Fibonacci Series (Iterative): 0 1 1 2 3 
+Iterative function called 4 times.
+Time taken: 17.0 milliseconds
+Fibonacci Series Menu:
+1. Calculate Iteratively
+2. Calculate Recursively
+3. Quit
+Enter your choice: 2
+Enter the number of Fibonacci numbers to generate: 6
+Fibonacci Series (Recursive): 1 1 2 3 5 8 
+Recursive function called 34 times.
+Time taken: 1.0 milliseconds
+Fibonacci Series Menu:
+1. Calculate Iteratively
+2. Calculate Recursively
+3. Quit
+Enter your choice: 3
+Successfully Exited.
 
-
-/*
-Non-Recursive Approach:
-
-Time Complexity: O(n) - Linear time complexity because it calculates Fibonacci numbers iteratively.
-Space Complexity: O(n) - Requires an array to store the calculated values.
-Recursive Approach:
-
-Time Complexity: O(2^n) - Exponential time complexity because it recalculates the same values multiple times.
-Space Complexity: O(n) - Space complexity for the recursive call stack.
 
 
 */
