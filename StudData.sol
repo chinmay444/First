@@ -1,27 +1,37 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract StudentData {
-    struct Student {
-        uint studentID;
-        string name;
-        uint age;
-    }
-    
-    Student[] public students;
-
-    fallback() external {
-        revert("Fallback function is not allowed.");
-    }
-
-    function createStudent(uint _studentID, string memory _name, uint _age) public {
-        Student memory newStudent = Student(_studentID, _name, _age);
-        students.push(newStudent);
-    }
-
-    function getStudent(uint index) public view returns (uint, string memory, uint) {
-        require(index < students.length, "Student not found.");
-        Student memory student = students[index];
-        return (student.studentID, student.name, student.age);
-    }
-}
+// SPDX-License-Identifier: MIT  
+ pragma solidity >= 0.7.0;  
+   
+ contract Student_management{  
+   
+         struct Student{  
+                 int stud_id;  
+                 string Name;  
+                 string Department;  
+         }  
+   
+         Student[] Students;  
+   
+         function add_stud(int stud_id, string memory Name, string memory Department) public{  
+                 Student memory stud = Student(stud_id, Name, Department);  
+                 Students.push(stud);  
+         }  
+   
+         function getStudent(int stud_id) public view returns(string memory, string memory){  
+                 for(uint i = 0; i < Students.length; i++){  
+                         Student memory stud = Students[i];  
+                         if(stud.stud_id == stud_id){  
+                                 return(stud.Name, stud.Department);  
+                         }  
+                 }  
+         return("Name Not Found", "Department Not Found");  
+         }  
+   
+             function getStudentsCount() public view returns (uint256) {  
+         return Students.length;  
+     }  
+   
+         //Fallback Function  
+         fallback() external {  
+         add_stud( 0,"Unknown", "CSE");  
+     }  
+ } 
